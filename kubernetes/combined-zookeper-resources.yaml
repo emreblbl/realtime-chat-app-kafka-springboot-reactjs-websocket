@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper-deployment
+  namespace: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: zookeeper
+  template:
+    metadata:
+      labels:
+        component: zookeeper
+    spec:
+      containers:
+        - name: zookeeper
+          image: zookeeper:latest
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "125m"
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 2181
+          tty: true
+          livenessProbe:
+            exec:
+              command:
+                - /opt/check.sh
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          readinessProbe:
+            exec:
+              command:
+                - /opt/check.sh
+            initialDelaySeconds: 30
+            periodSeconds: 5
+      imagePullSecrets:
+        - name: regcred
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper-ip-service
+  namespace: kafka
+spec:
+  type: ClusterIP
+  selector:
+    component: zookeeper
+  ports:
+    - name: zookeeper
+      protocol: TCP
+      port: 2181
+      targetPort: 2181

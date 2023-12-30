@@ -1,0 +1,26 @@
+
+
+** Deploy ZooKeeper **
+
+
+git clone git@bitbucket.org:oleksii_y/tutorial-apache-kafka-cluster.git
+
+Go to the tutorial-apache-kafka-cluster folder and run this command:
+
+$ kubectl apply -f zookeeper-deployment.yaml && kubectl apply -f zookeeper-ip-service.yaml
+
+
+*** Step 2. Deploy Apache Kafka Cluster ***
+
+kubectl apply -f kafka-1-deployment.yaml && kubectl apply -f kafka-2-deployment.yaml && kubectl apply -f kafka-3-deployment.yaml && kubectl apply -f kafka-1-ip-service.yaml && kubectl apply -f kafka-2-ip-service.yaml && kubectl apply -f kafka-3-ip-service.yaml
+
+
+
+***OUTPUT***
+
+deployment.apps/kafka-1-deployment created
+deployment.apps/kafka-2-deployment created
+deployment.apps/kafka-3-deployment created
+service/kafka-1-ip-service created
+service/kafka-2-ip-service created
+service/kafka-3-ip-service created
