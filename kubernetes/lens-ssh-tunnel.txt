@@ -1,0 +1,11 @@
+
+
+
+ From machine to remote machine
+ssh -L 32769:127.0.0.1:32769 username@192.168.1.100
+
+
+
+
+From remote machine to internal wsl (ubuntu)
+ssh -L 32769:127.0.0.1:32769 username@172.22.142.141
