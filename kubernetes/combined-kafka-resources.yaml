@@ -33,35 +33,14 @@ spec:
       labels:
         app: kafka-app
     spec:
-      initContainers:
-        - name: init-pod-id
-          image: busybox
-          command:
-            - /bin/sh
-            - -c
-            - export LAST_FIELD=$(echo $POD_NAME | awk -F '-' '{print $NF}') && echo $LAST_FIELD > /etc/pod-id/pod-id
-          env:
-            - name: POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-          volumeMounts:
-            - mountPath: /etc/pod-id
-              name: pod-id
       containers:
         - name: kafka-container
           image: bitnami/kafka:latest
           ports:
             - containerPort: 9092
           env:
-            - name: POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
             - name: KAFKA_BROKER_ID
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.annotations['pod-id']
+              value: "1"
             - name: KAFKA_CFG_LISTENERS
               value: "PLAINTEXT://:9092"
             - name: KAFKA_CFG_ADVERTISED_LISTENERS
@@ -90,11 +69,3 @@ spec:
         resources:
           requests:
             storage: "1Gi"
-    - metadata:
-        name: pod-id
-      spec:
-        accessModes:
-          - "ReadWriteOnce"
-        resources:
-          requests:
-            storage: "1Mi"
