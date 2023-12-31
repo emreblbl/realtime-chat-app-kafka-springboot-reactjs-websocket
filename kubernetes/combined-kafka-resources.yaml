@@ -32,7 +32,15 @@ spec:
     metadata:
       labels:
         app: kafka-app
+
     spec:
+      initContainers:
+        - name: init-my-service
+          image: busybox
+          command: [ 'sh', '-c', 'export KAFKA_BROKER_ID=$(hostname | grep -o "[0-9]*$")' ]
+          env:
+            - name: KAFKA_BROKER_ID
+              value: "$(KAFKA_BROKER_ID)"
       containers:
         - name: kafka-container
           image: bitnami/kafka:latest
@@ -42,7 +50,7 @@ spec:
             - name: KAFKA_BROKER_ID
               valueFrom:
                 fieldRef:
-                  fieldPath: metadata.name
+                  fieldPath: metadata.labels['KAFKA_BROKER_ID']
             - name: KAFKA_CFG_LISTENERS
               value: "PLAINTEXT://:9092"
             - name: KAFKA_CFG_ADVERTISED_LISTENERS
