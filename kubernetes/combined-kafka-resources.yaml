@@ -59,7 +59,9 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: KAFKA_BROKER_ID
-              value: "1"
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.annotations['pod-id']
             - name: KAFKA_CFG_LISTENERS
               value: "PLAINTEXT://:9092"
             - name: KAFKA_CFG_ADVERTISED_LISTENERS
