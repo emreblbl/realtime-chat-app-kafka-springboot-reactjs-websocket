@@ -40,7 +40,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: zookeeper-ip-service
+  name: zookeeper-svc
   namespace: kafka
 spec:
   type: ClusterIP
