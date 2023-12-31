@@ -57,9 +57,8 @@ spec:
           env:
             - name: KAFKA_BROKER_ID
               valueFrom:
-                secretKeyRef:
-                  name: broker-id
-                  key: broker-id
+                fieldRef:
+                  fieldPath: metadata.annotations['brokerId']
             - name: KAFKA_CFG_LISTENERS
               value: "PLAINTEXT://:9092"
             - name: KAFKA_CFG_ADVERTISED_LISTENERS
