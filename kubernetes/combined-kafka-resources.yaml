@@ -33,6 +33,21 @@ spec:
       labels:
         app: kafka-app
     spec:
+      initContainers:
+        - name: init-pod-id
+          image: busybox
+          command:
+            - /bin/sh
+            - -c
+            - export LAST_FIELD=$(echo $POD_NAME | awk -F '-' '{print $NF}') && echo $LAST_FIELD > /etc/pod-id/pod-id
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          volumeMounts:
+            - mountPath: /etc/pod-id
+              name: pod-id
       containers:
         - name: kafka-container
           image: bitnami/kafka:latest
@@ -73,3 +88,8 @@ spec:
         resources:
           requests:
             storage: "1Gi"
+    - metadata:
+        name: pod-id
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
