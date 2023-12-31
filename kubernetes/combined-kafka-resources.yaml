@@ -39,8 +39,8 @@ spec:
           ports:
             - containerPort: 9092
           env:
-            - name: KAFKA_BROKER_ID
-              value: "1"
+            - name: REPLICAS
+              value: "3"
             - name: KAFKA_CFG_LISTENERS
               value: "PLAINTEXT://:9092"
             - name: KAFKA_CFG_ADVERTISED_LISTENERS
