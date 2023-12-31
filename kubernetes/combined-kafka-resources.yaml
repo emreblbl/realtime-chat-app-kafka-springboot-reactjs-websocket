@@ -39,8 +39,12 @@ spec:
           ports:
             - containerPort: 9092
           env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
             - name: KAFKA_BROKER_ID
-              value: "1"
+              value: "$(echo $POD_NAME | awk -F '-' '{print $NF}')"
             - name: KAFKA_CFG_LISTENERS
               value: "PLAINTEXT://:9092"
             - name: KAFKA_CFG_ADVERTISED_LISTENERS
