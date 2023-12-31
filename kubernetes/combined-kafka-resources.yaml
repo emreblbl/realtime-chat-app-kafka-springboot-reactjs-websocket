@@ -33,22 +33,6 @@ spec:
       labels:
         app: kafka-app
     spec:
-      initContainers:
-        - name: init-broker-id
-          image: busybox
-          command:
-            - /bin/sh
-            - -c
-            - >
-              echo $(echo $POD_NAME | awk -F '-' '{print $NF}') > /etc/broker-id/broker-id;
-          env:
-            - name: POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-          volumeMounts:
-            - name: broker-id
-              mountPath: /etc/broker-id
       containers:
         - name: kafka-container
           image: bitnami/kafka:latest
@@ -56,7 +40,7 @@ spec:
             - containerPort: 9092
           env:
             - name: KAFKA_BROKER_ID
-              value: "/broker-id/broker-id"
+              value: "1"
             - name: KAFKA_CFG_LISTENERS
               value: "PLAINTEXT://:9092"
             - name: KAFKA_CFG_ADVERTISED_LISTENERS
@@ -76,9 +60,6 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /bitnami/kafka
-            - name: broker-id
-              mountPath: /etc/broker-id
-              subPath: broker-id
   volumeClaimTemplates:
     - metadata:
         name: data
@@ -88,11 +69,3 @@ spec:
         resources:
           requests:
             storage: "1Gi"
-    - metadata:
-        name: broker-id
-      spec:
-        accessModes:
-          - "ReadWriteOnce"
-        resources:
-          requests:
-            storage: "1Mi"
