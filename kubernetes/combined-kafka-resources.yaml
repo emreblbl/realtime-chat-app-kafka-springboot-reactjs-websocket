@@ -56,7 +56,10 @@ spec:
             - containerPort: 9092
           env:
             - name: KAFKA_BROKER_ID
-              value:  metadata.annotations['brokerId']
+              valueFrom:
+                secretKeyRef:
+                  name: broker-id
+                  key: broker-id
             - name: KAFKA_CFG_LISTENERS
               value: "PLAINTEXT://:9092"
             - name: KAFKA_CFG_ADVERTISED_LISTENERS
@@ -78,6 +81,7 @@ spec:
               mountPath: /bitnami/kafka
             - name: broker-id
               mountPath: /etc/broker-id
+              subPath: broker-id
   volumeClaimTemplates:
     - metadata:
         name: data
