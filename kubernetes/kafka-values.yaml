@@ -2,7 +2,7 @@ image:
   debug: true
 replicaCount: 3
 externalAccess:
-  enabled: true
+  enabled: false
   autoDiscovery:
     enabled: true
 kraft:
