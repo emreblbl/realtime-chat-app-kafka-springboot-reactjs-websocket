@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kafka-chat-server
+  namespace: app
   labels:
     app: kafka-chat-server
 spec:
