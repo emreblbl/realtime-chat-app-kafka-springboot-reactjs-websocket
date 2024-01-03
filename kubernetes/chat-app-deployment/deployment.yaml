@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-chat-server
+  labels:
+    app: kafka-chat-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-chat-server
+  template:
+    metadata:
+      labels:
+        app: kafka-chat-server
+    spec:
+      containers:
+      - name: kafka-chat-server
+        image: emreblblvv/kafka-server:latest
+        ports:
+        - containerPort: 8080
